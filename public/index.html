@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<!-- HTML5 Hello world by kirupa - http://www.kirupa.com/html5/getting_your_feet_wet_html5_pg1.htm -->
+<html lang="en-us">
+
+<head>
+<meta charset="utf-8">
+<title>Hello...</title>
+<style type="text/css">
+#mainContent {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: xx-large;
+	font-weight: bold;
+	background-color: #E3F0FB;
+	border-radius: 4px;
+	text-align: center;
+	padding: 10px;
+}
+.buttonStyle {
+	border-radius: 4px;
+	border: thin solid #F0E020;
+	padding: 5px;
+	background-color: #F8F094;
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	font-weight: bold;
+	color: #663300;
+	width: 75px;
+}
+
+.buttonStyle:hover {
+	border: thin solid #FFCC00;
+	background-color: #FCF9D6;
+	color: #996633;
+	cursor: pointer;
+}
+.buttonStyle:active {
+	border: thin solid #99CC00;
+	background-color: #F5FFD2;
+	color: #669900;
+	cursor: pointer;
+}
+
+</style>
+</head>
+
+<body>
+<div id="mainContent">
+<!--<p id="helloText">?</p>-->
+<button id="clickButton1" class="buttonStyle">Night</button>
+<button id="clickButton2" class="buttonStyle">Day</button>
+</div>
+<script> 
+var nightButton = document.getElementById("clickButton1");
+var dayButton = document.getElementById("clickButton2");
+//var myText = document.getElementById("helloText");
+
+nightButton.addEventListener('click', changeNight, false);
+dayButton.addEventListener('click', changeDay, false);
+
+function changeNight() {
+	//myText.textContent = "hello, world!";
+	
+	
+	var httpRequest = new XMLHttpRequest();
+	var response = '';
+	httpRequest.open("GET", "/save/night"); //open a get destination - path; sets a parameter
+	httpRequest.send("night"); 
+	
+	document.body.style.background = 'black';
+}
+
+function changeDay() {
+	var httpRequest = new XMLHttpRequest();
+	httpRequest.open("GET", "/save/night"); //open a get destination - path; sets a parameter
+	httpRequest.send("day"); 
+	
+	document.body.style.background = 'white';
+}
+
+window.onload = function() {
+	var httpRequest = new XMLHttpRequest();
+	var response = '';
+	
+	httpRequest.onreadystatechange = function() {
+		if(httpRequest.readyState == XMLHttpRequest.DONE) {
+			response = httpRequest.responseText; //if use jQuery $()
+			console.log(response);
+			if (response == 'day')
+				document.body.style.background = 'white';
+			if (response == 'night')
+				document.body.style.background = 'black';
+		}
+	};
+	
+	httpRequest.open("GET", "/load"); //open a get destination - path; sets a parameter
+	httpRequest.send("userPreference"); 
+};
+</script>
+
+</body>
+</html>
